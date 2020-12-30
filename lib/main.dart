@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import './question.dart';
-import './answer.dart';
+import './quiz.dart';
+import './result.dart';
 
 //StatelessWidget só aceita renderizar widgets com informações alteradas externamente
 //StatefulWidget aceita atualizar a renderização de widgets com atualização de informação interna também
@@ -14,32 +14,60 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  var _questionIndex = 0;
+  final _questions = const [
+    {
+      'questionText': 'What\'s your favorite color ?',
+      'answers': [
+        {'text': 'Black', 'score': 10},
+        {'text': 'Red', 'score': 5},
+        {'text': 'Green', 'score': 3},
+        {'text': 'White', 'score': 1}
+      ]
+    },
+    {
+      'questionText': 'What\'s your favorite animal ?',
+      'answers': [
+        {'text': 'Rabbit', 'score': 3},
+        {'text': 'Snake', 'score': 11},
+        {'text': 'Elephant', 'score': 5},
+        {'text': 'Lion', 'score': 9}
+      ]
+    },
+    {
+      'questionText': 'What\'s your favorite season ?',
+      'answers': [
+        {'text': 'Summer', 'score': 10},
+        {'text': 'Spring', 'score': 7},
+        {'text': 'Autumn', 'score': 3},
+        {'text': 'Winter', 'score': 1}
+      ]
+    },
+  ];
 
-  void _answerQuestion() {
+  var _questionIndex = 0;
+  var _totalScore = 0;
+
+  void _resetQuiz() {
+    setState(() {
+      _questionIndex = 0;
+      _totalScore = 0;
+    });
+  }
+
+  void _answerQuestion(int score) {
+    _totalScore += score;
+
     setState(() {
       _questionIndex++;
       print(_questionIndex);
     });
+    if (_questionIndex < _questions.length) {
+      print('We have more questions');
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    const questions = [
-      {
-        'questionText': 'What\'s your favorite color ?',
-        'answers': ['Black', 'Red', 'Green', 'White']
-      },
-      {
-        'questionText': 'What\'s your favorite animal ?',
-        'answers': ['Rabbit', 'Snake', 'Elephant', 'Lion']
-      },
-      {
-        'questionText': 'What\'s your favorite season ?',
-        'answers': ['Summer', 'Spring', 'Autumn', 'Winter']
-      },
-    ];
-
     // 3 formas diferentes de vincular uma ação a um evento qualquer do widget, nesse caso, do click do botão
     //onPressed: _answerQuestion
     //onPressed: () => print('Answer 2 choosen!')),
@@ -56,19 +84,12 @@ class _MyAppState extends State<MyApp> {
         appBar: AppBar(
           title: Text('My first app'),
         ),
-        body: Column(
-          children: [
-            Question(
-              questions[_questionIndex]['questionText'],
-            ),
-            //Spread operator -- pega uma lista de elementos e retira eles dela, adicionando cada um dos elementos individualmente. Ao invés de
-            // retornar uma lista a uma lista, ele retorna os valores dessa lista, de forma que o resultado não seja uma lista encadeada
-            ...(questions[_questionIndex]['answers'] as List<String>)
-                .map((answer) {
-              return Answer(_answerQuestion, answer);
-            }).toList(),
-          ],
-        ),
+        body: _questionIndex < _questions.length
+            ? Quiz(
+                answerQuestion: _answerQuestion,
+                questionIndex: _questionIndex,
+                questions: _questions)
+            : Result(_totalScore, _resetQuiz),
       ),
     );
   }
