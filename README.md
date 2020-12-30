@@ -1,16 +1,7 @@
-# flutter_complete_guide
+# Quiz_App
 
-A new Flutter project.
+Primeiro projeto de estudos em flutter. App de perguntas.
 
-## Getting Started
+## Resumo
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+É basicamente um projeto com 3 perguntas, cada uma com 4 alternativas diferentes. Cada alternativa de cada pergunta tem um valor associado a si. Ao final das respostas, com base na somatória desses valores, uma mensagem diferentes é mostrada na tela.
